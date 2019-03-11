@@ -1,47 +1,71 @@
+// to make sure the html has loaded before the script runs we start with:
+
 $(document).ready(function() {
+  // the game will start with a click on the start button, this calls the game.start function:
   $("#start").on("click", function() {
     game.start();
   });
-
+  // also we have another click to look out for at the end of the questions
   $(document).on("click", "#end", function() {
     game.done();
   });
 
+  // an array of questions containing individual questions as objects
   var questions = [
     {
-      question: "This is a question, what is the answer? ",
-      correct_answer: "Something",
-      answers: ["A", "3", "Not now", "Something"]
+      question: "Who directed &quot;E.T. the Extra-Terrestrial&quot; (1982)?",
+      correct_answer: "Steven Spielberg",
+      answers: [
+        "Stanley Kubrick",
+        "James Cameron",
+        "Tim Burton",
+        "Steven Spielberg"
+      ]
     },
     {
-      question: "What is the unit of currency in Laos?",
-      correct_answer: "Kip",
-      answers: ["Ruble", "Konra", "Kip", "Dollar"]
+      question:
+        "Who played Deputy Marshal Samuel Gerard in the 1993 film &quot;The Fugitive&quot;?",
+      correct_answer: "Tommy Lee Jones",
+      answers: [
+        "Harrison Ford",
+        "Tommy Lee Jones",
+        "Harvey Keitel",
+        "Martin Landau"
+      ]
     }
   ];
 
+  //this is the game variable which runs through the game, setting objects and running functions.
   var game = {
+    //start with a score of 0
     correct: 0,
     incorrect: 0,
-    counter: 5,
+    // the counter will start at 60 seconds
+    counter: 60,
+    // from 60 seconds the countdown function will decrease the counter, manipulating the html as it does:
     countdown: function() {
       game.counter--;
       $("#counter").html(game.counter);
+      // when te counter hits 0 the time is up, triggering the game.done function:
       if (game.counter <= 0) {
         clearInterval(timer);
         game.done();
       }
     },
+
+    // when the game.start function is called, the start button is removed and the timer set to 60 decreasing every second, this is added to the html
     start: function() {
       $("#start").remove();
       timer = setInterval(game.countdown, 1000);
       $("#container").prepend(
-        '<h2>Time Remaining: <span id="counter">120</span> Seconds</h2>'
+        '<h2>Time Remaining: <span id="counter">60</span> Seconds</h2>'
       );
+      // for each question and for each of their answers we append to the page, h2 for the q and radio buttons for the answers.
       for (var i = 0; i < questions.length; i++) {
         $("#container").append("<h2>" + questions[i].question + "</h2>");
         for (var j = 0; j < questions[i].answers.length; j++) {
           $("#container").append(
+            // append a radio button and a name to be called back when the results are checked
             "<input type='radio' name='question-" +
               i +
               "' value='" +
@@ -51,9 +75,15 @@ $(document).ready(function() {
           );
         }
       }
-      $("#container").append('<br><br><button id="end">Done</button>');
+      // also a done button is appended to the bottom of the page
+      $("#container").append(
+        '<br><button id="end" class="btn btn-primary btn-lg btn-block">Done</button>'
+      );
     },
+
+    // the done function is called if the time is up or the done button is clicked
     done: function() {
+      // for each question we take the name data added previously and compare it to the correct answer in the question's object
       $.each($('input[name="question-0"]:checked'), function() {
         if ($(this).val() == questions[0].correct_answer) {
           game.correct++;
@@ -70,6 +100,8 @@ $(document).ready(function() {
       });
       this.result();
     },
+
+    // when the game is done results are displayed being called at the end of game.done
     result: function() {
       clearInterval(timer);
       $("#container h2").remove();
@@ -111,8 +143,6 @@ $(document).ready(function() {
 
 //   var correctScore = 0;
 // var incorrectScore = 0;
-
-// // at the beginning of the game a start button will be displayed, the button is clicked which starts our game:
 
 // var currentQ = 0;
 
