@@ -1,13 +1,30 @@
 body {
-  background-color: lightblue;
+  background-color: red;
+  margin: auto;
+}
+
+.wrapper {
+  width: 960px;
+  margin: auto;
 }
 
 h1 {
   display: block;
-  font-size: 2em;
-  margin-top: 0.67em;
-  margin-bottom: 0.67em;
-  margin-left: 0;
-  margin-right: 0;
-  font-weight: bold;
+  font-size: 80px;
+  font-weight: bolder;
+  text-align: center;
+}
+
+button {
+  padding: 15px 75px;
+  margin-top: 10%;
+  color: blue;
+  border: 2px solid blue;
+}
+
+.container {
+  background-color: white;
+  width: 100%;
+  padding: 50px;
+  color: #777777;
 }
